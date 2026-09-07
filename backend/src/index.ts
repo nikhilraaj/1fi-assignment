@@ -69,6 +69,7 @@ apiRouter.get('/products/:productId', async (req: Request, res: Response) => {
 });
 
 server.use('/api', apiRouter);
+server.use('/', apiRouter);
 
 // Export for Vercel Serverless Functions
 export default server;
