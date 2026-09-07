@@ -35,7 +35,7 @@ export default function ProductDetails() {
   const [selectedEmi, setSelectedEmi] = useState<EmiPlan | null>(null);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/products/${id}`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "")}/products/${id}`)
       .then(res => {
         if (!res.ok) throw new Error('API failed');
         return res.json();

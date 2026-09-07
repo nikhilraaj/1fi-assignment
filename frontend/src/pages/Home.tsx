@@ -28,7 +28,7 @@ export default function Home() {
   const [features, setFeatures] = useState<Feature[]>([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/home-data`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "")}/home-data`)
       .then(res => res.json())
       .then(data => {
         setBrands(data.brands);
