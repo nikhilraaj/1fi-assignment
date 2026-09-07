@@ -9,10 +9,19 @@ const server = express();
 const dbClient = new PrismaClient();
 const port = process.env.PORT || 3001; // Change to 3001 to avoid conflict
 
-server.use(cors());
+server.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 server.use(express.json());
 
 const apiRouter = Router();
+
+// Root route for health check
+server.get('/', (_req: Request, res: Response) => {
+  res.status(200).json({ message: '1Fi API is running' });
+});
 
 // Fetch all available products
 apiRouter.get('/products', async (_req: Request, res: Response) => {
@@ -61,6 +70,12 @@ apiRouter.get('/products/:productId', async (req: Request, res: Response) => {
 
 server.use('/api', apiRouter);
 
-server.listen(port, () => {
-  console.log(`[API] Listening for requests on port ${port}`);
-});
+// Export for Vercel Serverless Functions
+export default server;
+
+// Only listen if not running on Vercel
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  server.listen(port, () => {
+    console.log(`[API] Listening for requests on port ${port}`);
+  });
+}
