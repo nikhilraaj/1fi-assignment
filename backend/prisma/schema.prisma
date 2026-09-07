@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String           @id @default(uuid())
+  name        String
+  description String
+  imageUrl    String
+  basePrice   Float
+  variants    ProductVariant[]
+  emiPlans    EmiPlan[]
+}
+
+model ProductVariant {
+  id             String  @id @default(uuid())
+  productId      String
+  name           String  // e.g., "128GB, Black"
+  priceModifier  Float   // Amount to add/subtract from basePrice
+  product        Product @relation(fields: [productId], references: [id])
+}
+
+model EmiPlan {
+  id           String   @id @default(uuid())
+  productId    String
+  months       Int      // e.g., 3, 6, 9, 12
+  interestRate Float    @default(0.0) // 0 means no-cost EMI
+  product      Product  @relation(fields: [productId], references: [id])
+}
+
+model Brand {
+  id        String   @id @default(uuid())
+  name      String
+  imageUrl  String?
+}
+
+model Offer {
+  id          String @id @default(uuid())
+  title       String
+  tag         String
+  priceText   String
+  gradient    String
+}
+
+model Feature {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  iconName    String
+  iconColor   String
+}
