@@ -31,7 +31,7 @@ apiRouter.get('/products', async (_req: Request, res: Response) => {
     });
     res.status(200).json(allProducts);
   } catch (err) {
-    res.status(500).json({ message: 'Error retrieving products' });
+    res.status(500).json({ message: 'Error retrieving products', error: err instanceof Error ? err.message : String(err) });
   }
 });
 
@@ -45,7 +45,7 @@ apiRouter.get('/home-data', async (_req: Request, res: Response) => {
     ]);
     res.status(200).json({ brands: brandList, offers: offerList, features: featureList });
   } catch (err) {
-    res.status(500).json({ message: 'Error retrieving home data' });
+    res.status(500).json({ message: 'Error retrieving home data', error: err instanceof Error ? err.message : String(err) });
   }
 });
 
@@ -64,7 +64,7 @@ apiRouter.get('/products/:productId', async (req: Request, res: Response) => {
     }
     res.status(200).json(itemData);
   } catch (err) {
-    res.status(500).json({ message: 'Server error occurred' });
+    res.status(500).json({ message: 'Server error occurred', error: err instanceof Error ? err.message : String(err) });
   }
 });
 
